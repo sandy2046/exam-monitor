@@ -9,16 +9,37 @@
             广商监考流程系统
           </div>
           <div class="actions">
+            <!-- 时间同步状态显示 -->
             <el-button
-              v-if="timeStore.isSynced"
+              v-if="timeStore.syncStatus.status === 'syncing'"
+              type="info"
+              size="small"
+              plain
+              :loading="true"
+            >
+              时间同步中...
+            </el-button>
+            <el-button
+              v-else-if="timeStore.isSynced"
               :type="timeStore.isNormal ? 'success' : timeStore.isWarning ? 'warning' : 'danger'"
               size="small"
               plain
               @click="showTimeInfo"
+              :icon="timeStore.isNormal ? '✅' : timeStore.isWarning ? '⚠️' : '❌'"
             >
-              ⏱️ {{ timeStore.syncStatus.message }}
+              {{ timeStore.syncStatus.sourceName || '时间' }}: {{ timeStore.syncStatus.offset.toFixed(1) }}s
             </el-button>
-            <el-button size="small" @click="syncTime" :loading="timeStore.isLoading">
+            <el-button
+              v-else
+              type="info"
+              size="small"
+              plain
+              @click="syncTime"
+            >
+              ⏱️ 未同步
+            </el-button>
+
+            <el-button size="small" @click="syncTime" :loading="timeStore.isLoading && timeStore.syncStatus.status !== 'syncing'">
               {{ timeStore.isLoading ? '同步中...' : '同步时间' }}
             </el-button>
             <el-button size="small" @click="showSettings = true">⚙️ 设置</el-button>
@@ -141,6 +162,25 @@ async function syncTime() {
     timeStore.startAutoSync()
   } else {
     ElMessage.error('时间同步失败，请检查网络')
+  }
+}
+
+// 页面加载时自动同步（带用户体验优化）
+async function autoSyncOnLoad() {
+  // 显示加载状态
+  ElMessage.info('正在同步时间...')
+
+  await timeStore.autoSyncOnLoad()
+
+  const status = timeStore.syncStatus
+  if (status.status === 'normal') {
+    ElMessage.success(`时间同步成功 (${status.sourceName}, 偏差 ${status.offset.toFixed(2)}s)`)
+    // 启动定时自动同步
+    timeStore.startAutoSync()
+  } else if (status.status === 'warning') {
+    ElMessage.warning(`时间同步警告: ${status.message}`)
+  } else if (status.status === 'error') {
+    ElMessage.error(`时间同步失败: ${status.message}`)
   }
 }
 
@@ -308,10 +348,8 @@ onMounted(async () => {
     }
   }
 
-  // 如果尚未同步时间，自动同步一次
-  if (!timeStore.isSynced) {
-    await syncTime()
-  }
+  // 页面加载时自动同步时间（带用户体验优化）
+  await autoSyncOnLoad()
 })
 
 onUnmounted(() => {

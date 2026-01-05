@@ -70,13 +70,83 @@ export const useTimeStore = defineStore('time', () => {
   }
 
   /**
+   * 页面加载时自动同步（带用户体验优化）
+   */
+  async function autoSyncOnLoad(): Promise<void> {
+    isLoading.value = true
+
+    // 显示友好的加载状态
+    syncStatus.value = {
+      status: 'syncing',
+      offset: 0,
+      lastSyncTime: null,
+      message: '正在同步时间...',
+      source: 'syncing',
+      sourceName: '同步中',
+    }
+
+    try {
+      // 调用 timeService 的自动同步
+      const result = await timeService.autoSyncOnLoad()
+
+      // 更新状态
+      const status = timeService.getTimeSyncStatus()
+      syncStatus.value = {
+        status: status.status,
+        offset: result.offset,
+        lastSyncTime: result.serverTime,
+        message: status.message,
+        source: result.source,
+        sourceName: status.sourceName,
+      }
+
+      lastUpdateTime.value = new Date()
+    } catch (error) {
+      console.error('自动同步失败:', error)
+      syncStatus.value = {
+        status: 'error',
+        offset: 0,
+        lastSyncTime: null,
+        message: '同步失败，使用本地时间',
+        source: 'local',
+        sourceName: '本地时间',
+      }
+    } finally {
+      isLoading.value = false
+    }
+  }
+
+  /**
+   * 手动同步时间
+   */
+  async function syncTime(): Promise<boolean> {
+    isLoading.value = true
+
+    try {
+      const result = await timeService.syncTime()
+      const status = timeService.getTimeSyncStatus()
+
+      syncStatus.value = {
+        status: status.status,
+        offset: result.offset,
+        lastSyncTime: result.serverTime,
+        message: status.message,
+        source: result.source,
+        sourceName: status.sourceName,
+      }
+
+      lastUpdateTime.value = new Date()
+      return result.success
+    } finally {
+      isLoading.value = false
+    }
+  }
+
+  /**
    * 启动自动同步（每5分钟）
    */
   function startAutoSync(): void {
     if (syncInterval) return // 已经在运行
-
-    // 立即同步一次
-    syncTime()
 
     // 每5分钟同步一次
     syncInterval = window.setInterval(() => {
@@ -132,6 +202,7 @@ export const useTimeStore = defineStore('time', () => {
     // 方法
     syncTime,
     getAccurateTime,
+    autoSyncOnLoad,
     startAutoSync,
     stopAutoSync,
     formatCountdown,

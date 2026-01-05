@@ -99,8 +99,8 @@ export interface Settings {
  * 时间同步状态
  */
 export interface TimeSyncStatus {
-  /** 状态：normal / warning / error */
-  status: 'normal' | 'warning' | 'error'
+  /** 状态：syncing / normal / warning / error */
+  status: 'syncing' | 'normal' | 'warning' | 'error'
   /** 时间偏差（秒） */
   offset: number
   /** 最后同步时间 */
@@ -109,6 +109,8 @@ export interface TimeSyncStatus {
   message: string
   /** 时间源 */
   source?: string
+  /** 时间源显示名称 */
+  sourceName?: string
 }
 
 /**

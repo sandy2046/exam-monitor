@@ -44,9 +44,8 @@
           </div>
         </div>
 
-        <!-- 当前阶段 - 绿色背景进度 -->
+        <!-- 当前阶段 - 彩色背景进度 -->
         <div class="section current-status">
-          <h3>当前阶段</h3>
           <div class="status-card" :class="{'node-changed': nodeChanged, 'has-progress': hasNodeProgress}" :style="nodeBackgroundStyle">
             <div class="node-main">
               <div class="node-info">
@@ -289,10 +288,29 @@ const hasNodeProgress = computed(() => {
   return examStore.progress.currentNode !== null
 })
 
-// 节点背景样式（绿色从右向左消退，代表剩余时间）
+// 节点背景样式（颜色从右向左消退，代表剩余时间）
 const nodeBackgroundStyle = computed(() => {
+  const percentage = nodeRemainingPercentage.value
+  let colorGradient = ''
+
+  // 根据剩余时间百分比改变颜色
+  if (percentage > 60) {
+    // 开始阶段 - 绿色
+    colorGradient = 'linear-gradient(90deg, #16a34a 0%, #0a7d0a 100%)'
+  } else if (percentage > 30) {
+    // 中间阶段 - 蓝绿色
+    colorGradient = 'linear-gradient(90deg, #0891b2 0%, #0e7490 100%)'
+  } else if (percentage > 10) {
+    // 后期阶段 - 橙色
+    colorGradient = 'linear-gradient(90deg, #ea580c 0%, #c2410c 100%)'
+  } else {
+    // 即将结束 - 红色
+    colorGradient = 'linear-gradient(90deg, #dc2626 0%, #b91c1c 100%)'
+  }
+
   return {
-    '--progress-width': `${nodeRemainingPercentage.value}%`
+    '--progress-width': `${percentage}%`,
+    '--progress-color': colorGradient
   }
 })
 
@@ -593,7 +611,7 @@ onUnmounted(() => {
   line-height: 1.4;
 }
 
-/* 绿色进度背景 - 从右向左消退，代表剩余时间 */
+/* 进度背景 - 从右向左消退，颜色随进度变化 */
 .status-card::before {
   content: '';
   position: absolute;
@@ -601,14 +619,14 @@ onUnmounted(() => {
   right: 0;
   height: 100%;
   width: 0%;
-  background: linear-gradient(90deg, #16a34a 0%, #0a7d0a 100%);
-  opacity: 0.18;
-  transition: width 0.6s ease;
+  opacity: 0.25;
+  transition: width 0.6s ease, background 0.6s ease;
   z-index: 0;
 }
 
 .status-card.has-progress::before {
   width: var(--progress-width, 0%);
+  background: var(--progress-color, linear-gradient(90deg, #16a34a 0%, #0a7d0a 100%));
 }
 
 /* 扫光动画 - 在绿色背景上 */
