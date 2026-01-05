@@ -237,13 +237,13 @@ function createTestTemplate() {
     nodes: [
       // 使用秒为单位，转换为分钟：20秒 = 0.333分钟
       // 为了测试方便，我们使用分钟的小数
-      { name: '节点1 - 考生入场', offset: 0, warnTime: 0, description: '测试节点1 - 20秒后进入下一环节' },
-      { name: '节点2 - 发卷', offset: 0.333, warnTime: 0, description: '测试节点2 - 20秒后进入下一环节' },
-      { name: '节点3 - 宣读规则', offset: 0.667, warnTime: 0, description: '测试节点3 - 20秒后进入下一环节' },
-      { name: '节点4 - 开始考试', offset: 1.0, warnTime: 0, description: '测试节点4 - 20秒后进入下一环节' },
-      { name: '节点5 - 中途检查', offset: 1.333, warnTime: 0, description: '测试节点5 - 20秒后进入下一环节' },
-      { name: '节点6 - 提醒收卷', offset: 1.667, warnTime: 0, description: '测试节点6 - 20秒后进入下一环节' },
-      { name: '节点7 - 考试结束', offset: 2.0, warnTime: 0, description: '测试节点7 - 测试结束' },
+      { name: '考生入场', offset: 0, warnTime: 0, description: '测试阶段1 - 20秒后进入下一阶段', tips: '核对证件、清点人数' },
+      { name: '发卷', offset: 0.333, warnTime: 0, description: '测试阶段2 - 20秒后进入下一阶段', tips: '检查密封、分发试卷' },
+      { name: '宣读规则', offset: 0.667, warnTime: 0, description: '测试阶段3 - 20秒后进入下一阶段', tips: '声音洪亮、重点强调' },
+      { name: '开始考试', offset: 1.0, warnTime: 0, description: '测试阶段4 - 20秒后进入下一阶段', tips: '提醒时间、检查文具' },
+      { name: '中途检查', offset: 1.333, warnTime: 0, description: '测试阶段5 - 20秒后进入下一阶段', tips: '巡视考场、关注异常' },
+      { name: '提醒收卷', offset: 1.667, warnTime: 0, description: '测试阶段6 - 20秒后进入下一阶段', tips: '提前15分钟提醒' },
+      { name: '考试结束', offset: 2.0, warnTime: 0, description: '测试阶段7 - 测试结束', tips: '清点试卷、签字确认' },
     ],
     isModified: true,
   }

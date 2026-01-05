@@ -24,45 +24,6 @@ export const useTimeStore = defineStore('time', () => {
   let syncInterval: number | null = null
 
   /**
-   * 同步时间
-   */
-  async function syncTime(): Promise<boolean> {
-    isLoading.value = true
-
-    try {
-      const result = await timeService.syncTime()
-
-      if (result.success && result.serverTime) {
-        // 直接使用 timeService 的状态结果
-        const status = timeService.getTimeSyncStatus()
-        syncStatus.value = {
-          status: status.status,
-          offset: result.offset,
-          lastSyncTime: result.serverTime,
-          message: status.message,
-          source: result.source,
-        }
-
-        lastUpdateTime.value = new Date()
-        return true
-      } else {
-        // 同步失败，但可能有本地时间可用
-        const status = timeService.getTimeSyncStatus()
-        syncStatus.value = {
-          status: status.status,
-          offset: 0,
-          lastSyncTime: null,
-          message: status.message,
-          source: result.source,
-        }
-        return false
-      }
-    } finally {
-      isLoading.value = false
-    }
-  }
-
-  /**
    * 获取当前准确时间
    */
   async function getAccurateTime(): Promise<Date> {

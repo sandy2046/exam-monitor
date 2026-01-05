@@ -46,6 +46,7 @@
 
         <!-- 当前阶段 - 彩色背景进度 -->
         <div class="section current-status">
+          <h3>当前阶段</h3>
           <div class="status-card" :class="{'node-changed': nodeChanged, 'has-progress': hasNodeProgress}" :style="nodeBackgroundStyle">
             <div class="node-main">
               <div class="node-info">
