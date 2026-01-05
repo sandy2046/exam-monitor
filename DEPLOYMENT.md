@@ -214,6 +214,65 @@ nvm use 20
 node --version
 ```
 
+### 构建失败：run-p not found
+
+**问题**：`npm run build` 报错 `run-p: not found`
+
+**解决方案**：
+
+```bash
+cd /opt/exam-monitor
+
+# 方法 1: 安装 npm-run-all2
+npm install --save-dev npm-run-all2
+
+# 方法 2: 使用备用构建脚本
+sudo bash scripts/build-simple.sh
+
+# 方法 3: 手动构建
+npm run type-check
+npm run build-only
+```
+
+**如果以上都不行，使用简化部署**：
+
+```bash
+# 1. 克隆仓库后，直接使用 vite 构建
+cd /opt/exam-monitor
+npm install
+npx vite build
+
+# 2. 然后配置 Nginx
+sudo bash scripts/setup-nginx.sh
+```
+
+### 依赖安装失败
+
+```bash
+# 清理并重试
+cd /opt/exam-monitor
+rm -rf node_modules package-lock.json
+npm install --legacy-peer-deps
+
+# 或使用 yarn
+npm install -g yarn
+yarn install
+yarn build
+```
+
+### Nginx 配置测试失败
+
+```bash
+# 查看详细错误
+sudo nginx -t -v
+
+# 检查配置语法
+sudo nginx -t
+
+# 查看完整日志
+sudo journalctl -u nginx -f
+```
+
 ## 生产环境优化
 
 ### 1. 使用 PM2（可选）

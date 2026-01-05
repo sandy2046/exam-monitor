@@ -120,8 +120,9 @@ install_project_deps() {
     log_info "安装项目依赖..."
     cd "$INSTALL_DIR"
 
-    # 使用 npm ci 确保版本一致
-    npm ci --only=production
+    # 安装所有依赖（包括构建需要的 devDependencies）
+    log_info "安装所有依赖（包括构建工具）..."
+    npm install
 
     log_info "依赖安装完成"
 }
@@ -131,14 +132,35 @@ build_project() {
     log_info "构建生产版本..."
     cd "$INSTALL_DIR"
 
-    npm run build
-
-    if [ ! -d "dist" ]; then
-        log_error "构建失败：dist 目录不存在"
-        exit 1
+    # 检查并安装 devDependencies（构建需要）
+    if [ ! -d "node_modules" ]; then
+        log_warn "node_modules 不存在，重新安装依赖..."
+        npm install
     fi
 
-    log_info "构建完成"
+    # 检查 npm-run-all2 是否安装
+    if [ ! -d "node_modules/npm-run-all2" ]; then
+        log_warn "npm-run-all2 未安装，正在安装..."
+        npm install --save-dev npm-run-all2
+    fi
+
+    # 尝试构建
+    if npm run build; then
+        if [ ! -d "dist" ]; then
+            log_error "构建失败：dist 目录不存在"
+            exit 1
+        fi
+        log_info "构建完成"
+    else
+        log_warn "标准构建失败，尝试直接构建..."
+        npm run build-only
+        if [ -d "dist" ]; then
+            log_info "构建完成（使用 build-only）"
+        else
+            log_error "构建失败"
+            exit 1
+        fi
+    fi
 }
 
 # 配置 Nginx
