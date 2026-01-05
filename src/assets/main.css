@@ -1,0 +1,154 @@
+/* 全局样式重置 */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  min-height: 100vh;
+}
+
+#app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Element Plus 主题覆盖 */
+.el-button--primary {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+  border: none !important;
+  font-weight: 600;
+}
+
+.el-button--success {
+  background: linear-gradient(135deg, #56ab2f 0%, #a8e063 100%) !important;
+  border: none !important;
+}
+
+.el-button--warning {
+  background: linear-gradient(135deg, #f09819 0%, #fde484 100%) !important;
+  border: none !important;
+  color: #333 !important;
+  font-weight: 600;
+}
+
+.el-button--danger {
+  background: linear-gradient(135deg, #eb3349 0%, #f45c43 100%) !important;
+  border: none !important;
+}
+
+.el-card {
+  border-radius: 12px !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1) !important;
+  border: none !important;
+}
+
+.el-card__header {
+  background: #f8f9fa !important;
+  border-bottom: 2px solid #e9ecef !important;
+  padding: 16px 20px !important;
+}
+
+.el-input__wrapper,
+.el-select__wrapper,
+.el-input-number__wrapper {
+  border-radius: 8px !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05) !important;
+}
+
+.el-tag {
+  border-radius: 6px !important;
+  font-weight: 600 !important;
+}
+
+.el-timeline-item__tail {
+  border-left: 3px solid #dcdfe6 !important;
+}
+
+.el-timeline-item__node--normal {
+  background-color: #409eff !important;
+}
+
+.el-timeline-item__node--success {
+  background-color: #67c23a !important;
+}
+
+.el-timeline-item__node--warning {
+  background-color: #e6a23c !important;
+}
+
+.el-timeline-item__node--info {
+  background-color: #909399 !important;
+}
+
+.el-progress-bar__inner {
+  background: linear-gradient(90deg, #667eea 0%, #764ba2 100%) !important;
+}
+
+.el-alert {
+  border-radius: 8px !important;
+  border: none !important;
+}
+
+.el-alert__content {
+  padding: 8px 0 !important;
+}
+
+.el-descriptions__cell {
+  font-size: 14px !important;
+}
+
+.el-descriptions__label {
+  background-color: #f5f7fa !important;
+  font-weight: 600 !important;
+}
+
+.el-input-number__decrease,
+.el-input-number__increase {
+  background: #f5f7fa !important;
+}
+
+.el-upload-dragger {
+  border-radius: 8px !important;
+  border: 2px dashed #dcdfe6 !important;
+}
+
+.el-upload-dragger:hover {
+  border-color: #409eff !important;
+  background: #ecf5ff !important;
+}
+
+/* 自定义滚动条 */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}
+
+/* 响应式断点 */
+@media (max-width: 768px) {
+  .el-card {
+    border-radius: 8px !important;
+  }
+
+  .el-button {
+    font-size: 14px !important;
+  }
+}

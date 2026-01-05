@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>存储调试工具</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .section {
+            margin-bottom: 20px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+        }
+        .section h3 {
+            margin-top: 0;
+            color: #333;
+        }
+        pre {
+            background: #f8f8f8;
+            padding: 10px;
+            border-radius: 4px;
+            overflow-x: auto;
+            font-size: 12px;
+        }
+        button {
+            padding: 8px 16px;
+            margin: 5px;
+            cursor: pointer;
+            border: none;
+            border-radius: 4px;
+            background: #409eff;
+            color: white;
+        }
+        button:hover {
+            background: #337ecc;
+        }
+        button.danger {
+            background: #f56c6c;
+        }
+        button.danger:hover {
+            background: #dd6161;
+        }
+        .info {
+            color: #666;
+            font-size: 13px;
+            margin-top: 5px;
+        }
+        .success {
+            color: #67c23a;
+        }
+        .error {
+            color: #f56c6c;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔍 模板存储调试工具</h1>
+        <p class="info">用于排查测试模板找不到的问题</p>
+
+        <div class="section">
+            <h3>1. 当前存储状态</h3>
+            <div id="storage-status"></div>
+        </div>
+
+        <div class="section">
+            <h3>2. 原始数据查看</h3>
+            <div>
+                <h4>远程模板 (remoteTemplates)</h4>
+                <pre id="remote-data">加载中...</pre>
+                <h4>本地模板 (localTemplates)</h4>
+                <pre id="local-data">加载中...</pre>
+            </div>
+        </div>
+
+        <div class="section">
+            <h3>3. 操作测试</h3>
+            <button onclick="createTestTemplate()">创建测试模板</button>
+            <button onclick="createLocalTemplate()">创建本地模板</button>
+            <button onclick="clearAll()">清空所有数据</button>
+            <button onclick="refresh()">刷新视图</button>
+            <p class="info">点击"创建测试模板"后，查看本地模板数据是否增加</p>
+        </div>
+
+        <div class="section">
+            <h3>4. 测试结果</h3>
+            <div id="test-result"></div>
+        </div>
+    </div>
+
+    <script>
+        // 模拟模板数据结构
+        function createTestTemplateData() {
+            const newId = `test-${Date.now()}`;
+            return {
+                id: newId,
+                name: '测试模板 - 20秒间隔',
+                version: '1.0',
+                nodes: [
+                    { name: '节点1 - 考生入场', offset: 0, warnTime: 0, description: '测试节点1 - 20秒后进入下一环节' },
+                    { name: '节点2 - 发卷', offset: 0.333, warnTime: 0, description: '测试节点2 - 20秒后进入下一环节' },
+                    { name: '节点3 - 宣读规则', offset: 0.667, warnTime: 0, description: '测试节点3 - 20秒后进入下一环节' },
+                    { name: '节点4 - 开始考试', offset: 1.0, warnTime: 0, description: '测试节点4 - 20秒后进入下一环节' },
+                    { name: '节点5 - 中途检查', offset: 1.333, warnTime: 0, description: '测试节点5 - 20秒后进入下一环节' },
+                    { name: '节点6 - 提醒收卷', offset: 1.667, warnTime: 0, description: '测试节点6 - 20秒后进入下一环节' },
+                    { name: '节点7 - 考试结束', offset: 2.0, warnTime: 0, description: '测试节点7 - 测试结束' },
+                ],
+                isModified: true,
+            };
+        }
+
+        function createLocalTemplateData() {
+            const newId = `local-${Date.now()}`;
+            return {
+                id: newId,
+                name: '新考试模板',
+                version: '1.0',
+                nodes: [
+                    { name: '考生入场', offset: -30, warnTime: 5, description: '清点人数' },
+                    { name: '发卷', offset: 0, warnTime: 0, description: '分发试卷' },
+                ],
+                isModified: true,
+            };
+        }
+
+        // 读取数据
+        function getLocalTemplates() {
+            const data = localStorage.getItem('exam_monitor_local_templates');
+            return data ? JSON.parse(data) : [];
+        }
+
+        function getRemoteTemplates() {
+            const data = localStorage.getItem('exam_monitor_remote_templates');
+            return data ? JSON.parse(data) : [];
+        }
+
+        // 保存数据
+        function saveLocalTemplates(templates) {
+            localStorage.setItem('exam_monitor_local_templates', JSON.stringify(templates));
+        }
+
+        // 刷新显示
+        function refresh() {
+            // 状态
+            const remote = getRemoteTemplates();
+            const local = getLocalTemplates();
+
+            document.getElementById('storage-status').innerHTML = `
+                <div style="font-size: 14px;">
+                    <div>远程模板数量: <strong>${remote.length}</strong></div>
+                    <div>本地模板数量: <strong>${local.length}</strong></div>
+                    <div style="margin-top: 10px;">
+                        <span class="${local.length > 0 ? 'success' : 'error'}">
+                            ${local.length > 0 ? '✅ 有本地模板数据' : '❌ 没有本地模板数据'}
+                        </span>
+                    </div>
+                </div>
+            `;
+
+            // 原始数据
+            document.getElementById('remote-data').textContent = JSON.stringify(remote, null, 2);
+            document.getElementById('local-data').textContent = JSON.stringify(local, null, 2);
+        }
+
+        // 创建测试模板
+        function createTestTemplate() {
+            const template = createTestTemplateData();
+            const local = getLocalTemplates();
+            local.push(template);
+            saveLocalTemplates(local);
+
+            const result = document.getElementById('test-result');
+            result.innerHTML = `
+                <div class="success">✅ 测试模板已创建</div>
+                <div>ID: ${template.id}</div>
+                <div>名称: ${template.name}</div>
+                <div>节点数: ${template.nodes.length}</div>
+            `;
+
+            refresh();
+        }
+
+        // 创建本地模板
+        function createLocalTemplate() {
+            const template = createLocalTemplateData();
+            const local = getLocalTemplates();
+            local.push(template);
+            saveLocalTemplates(local);
+
+            const result = document.getElementById('test-result');
+            result.innerHTML = `
+                <div class="success">✅ 本地模板已创建</div>
+                <div>ID: ${template.id}</div>
+                <div>名称: ${template.name}</div>
+            `;
+
+            refresh();
+        }
+
+        // 清空所有数据
+        function clearAll() {
+            if (confirm('确定要清空所有数据吗？')) {
+                localStorage.removeItem('exam_monitor_local_templates');
+                localStorage.removeItem('exam_monitor_remote_templates');
+                localStorage.removeItem('exam_monitor_active_exam');
+                localStorage.removeItem('exam_monitor_settings');
+                localStorage.removeItem('exam_monitor_last_sync');
+
+                document.getElementById('test-result').innerHTML = '<div class="error">🗑️ 所有数据已清空</div>';
+                refresh();
+            }
+        }
+
+        // 页面加载时自动刷新
+        window.addEventListener('load', refresh);
+    </script>
+</body>
+</html>

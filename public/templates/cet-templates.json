@@ -1,0 +1,174 @@
+[
+  {
+    "id": "cet4-2025",
+    "name": "CET-4 考试流程",
+    "version": "1.0",
+    "description": "大学英语四级考试标准流程",
+    "publishedAt": "2025-01-05T00:00:00Z",
+    "nodes": [
+      {
+        "name": "组织考生入场",
+        "offset": -40,
+        "warnTime": 5,
+        "description": "检查证件、签到、耳机试音",
+        "tips": "核对证件、安排座位、提示试音"
+      },
+      {
+        "name": "发试卷和答题卡",
+        "offset": -10,
+        "warnTime": 5,
+        "description": "发试题册、答题卡1、答题卡2",
+        "tips": "检查印刷、指导粘贴条形码"
+      },
+      {
+        "name": "阅读敬告考生",
+        "offset": -5,
+        "warnTime": 0,
+        "description": "阅读试题册正面'敬告考生'，不得翻阅",
+        "tips": "强调不得翻阅试题册"
+      },
+      {
+        "name": "写作考试开始",
+        "offset": 0,
+        "warnTime": 25,
+        "description": "写作30分钟（9:10-9:40），答题卡1作答",
+        "tips": "不得打开试题册，不戴耳机"
+      },
+      {
+        "name": "写作考试结束提醒",
+        "offset": 25,
+        "warnTime": 0,
+        "description": "5分钟后结束写作，开始听力",
+        "tips": "提示准备听力考试"
+      },
+      {
+        "name": "听力考试开始",
+        "offset": 30,
+        "warnTime": 20,
+        "description": "听力25分钟（9:40-10:05），打开试题册，戴耳机",
+        "tips": "命令打开试题册，戴上耳机"
+      },
+      {
+        "name": "收答题卡1",
+        "offset": 55,
+        "warnTime": 0,
+        "description": "听力结束，收答题卡1",
+        "tips": "清点答题卡1，确认无误"
+      },
+      {
+        "name": "检查答题卡1",
+        "offset": 60,
+        "warnTime": 0,
+        "description": "检查条形码、个人信息，记录缺考",
+        "tips": "核对信息、记录缺考情况"
+      },
+      {
+        "name": "阅读翻译考试",
+        "offset": 60,
+        "warnTime": 60,
+        "description": "阅读理解、翻译70分钟（10:10-11:20），答题卡2作答",
+        "tips": "维持考场秩序，关注异常"
+      },
+      {
+        "name": "考试结束提醒",
+        "offset": 120,
+        "warnTime": 0,
+        "description": "离考试结束还有10分钟",
+        "tips": "提醒时间，停止答题准备"
+      },
+      {
+        "name": "考试结束",
+        "offset": 130,
+        "warnTime": 0,
+        "description": "考试结束，收试题册与答题卡2",
+        "tips": "清点试卷、整理资料"
+      }
+    ]
+  },
+  {
+    "id": "cet6-2025",
+    "name": "CET-6 考试流程",
+    "version": "1.0",
+    "description": "大学英语六级考试标准流程",
+    "publishedAt": "2025-01-05T00:00:00Z",
+    "nodes": [
+      {
+        "name": "组织考生入场",
+        "offset": -40,
+        "warnTime": 5,
+        "description": "检查证件、签到、耳机试音",
+        "tips": "核对证件、安排座位、提示试音"
+      },
+      {
+        "name": "发试卷和答题卡",
+        "offset": -10,
+        "warnTime": 5,
+        "description": "发试题册、答题卡1、答题卡2",
+        "tips": "检查印刷、指导粘贴条形码"
+      },
+      {
+        "name": "阅读敬告考生",
+        "offset": -5,
+        "warnTime": 0,
+        "description": "阅读试题册正面'敬告考生'，不得翻阅",
+        "tips": "强调不得翻阅试题册"
+      },
+      {
+        "name": "写作考试开始",
+        "offset": 0,
+        "warnTime": 25,
+        "description": "写作30分钟（15:10-15:40），答题卡1作答",
+        "tips": "不得打开试题册，不戴耳机"
+      },
+      {
+        "name": "写作考试结束提醒",
+        "offset": 25,
+        "warnTime": 0,
+        "description": "5分钟后结束写作，开始听力",
+        "tips": "提示准备听力考试"
+      },
+      {
+        "name": "听力考试开始",
+        "offset": 30,
+        "warnTime": 25,
+        "description": "听力30分钟（15:40-16:10），打开试题册，戴耳机",
+        "tips": "命令打开试题册，戴上耳机"
+      },
+      {
+        "name": "收答题卡1",
+        "offset": 60,
+        "warnTime": 0,
+        "description": "听力结束，收答题卡1",
+        "tips": "清点答题卡1，确认无误"
+      },
+      {
+        "name": "检查答题卡1",
+        "offset": 65,
+        "warnTime": 0,
+        "description": "检查条形码、个人信息，记录缺考",
+        "tips": "核对信息、记录缺考情况"
+      },
+      {
+        "name": "阅读翻译考试",
+        "offset": 65,
+        "warnTime": 60,
+        "description": "阅读理解、翻译70分钟（16:15-17:25），答题卡2作答",
+        "tips": "维持考场秩序，关注异常"
+      },
+      {
+        "name": "考试结束提醒",
+        "offset": 125,
+        "warnTime": 0,
+        "description": "离考试结束还有10分钟",
+        "tips": "提醒时间，停止答题准备"
+      },
+      {
+        "name": "考试结束",
+        "offset": 135,
+        "warnTime": 0,
+        "description": "考试结束，收试题册与答题卡2",
+        "tips": "清点试卷、整理资料"
+      }
+    ]
+  }
+]
