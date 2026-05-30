@@ -4,6 +4,8 @@ import { VitePWA } from 'vite-plugin-pwa'
 import path from 'path'
 
 export default defineConfig({
+  base: '/exam-monitor/',
+  build: { outDir: 'docs' },
   plugins: [
     vue(),
     VitePWA({
